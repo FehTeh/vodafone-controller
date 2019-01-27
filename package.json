@@ -1,0 +1,23 @@
+{
+  "name": "vodafone-controller",
+  "version": "1.0.0",
+  "description": "control your Vodafone box with nodejs",
+  "main": "index.js",
+  "dependencies": {
+    "dgram": "^1.0.1",
+    "telnet-client": "^0.16.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JarvisFT/vodafone-controller.git"
+  },
+  "keywords": [
+    "vodafone",
+    "remote",
+    "box",
+    "telnet",
+    "tv"
+  ],
+  "author": "Filipe Tomas",
+  "license": "ISC"
+}
