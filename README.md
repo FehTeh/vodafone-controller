@@ -1,6 +1,6 @@
 # VODAFONE-CONTROLLER
 
-The Vodafone box has a telnet interface to receive remote control commands.  
+The Vodafone box has a tcp interface to receive remote control commands.  
 Also it sends a broadcast message with it's location and what it's playing.
 
 
