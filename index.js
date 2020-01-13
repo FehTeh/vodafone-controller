@@ -2,7 +2,7 @@ const PORT = 8082;
 const MULTICAST_ADDR = "239.255.255.250";
 
 const dgram = require("dgram");
-const telnet = require('telnet-client');
+const net = require('net');
 
 const channels = require("./constants").channels;
 const keys = require("./constants").keys;
@@ -74,6 +74,35 @@ function getChannel(ip)
     return "UNKNOWN";
 }
 
+function setChannel(ip, guid)
+{
+    var index = 1;
+    for (var key in channels) 
+    {
+        console.log(key + " " + guid)
+        if(key == guid)
+        {
+            break;
+        }
+        index++;
+    }
+
+    if(index > channels.length)
+    {
+        return console.log('CHANNEL NOT FOUND: "' + guid + '"!');
+    }
+
+    setKey(ip, "back");
+
+    var channelNumber = index.toString();
+
+    for(var i in channelNumber)
+    {
+        setKey(ip, channelNumber[i]);
+    }
+
+}
+
 function setKey(ip, key)
 {
     var n = keys[key];
@@ -81,24 +110,28 @@ function setKey(ip, key)
         return console.log('NOT MAPPED: "' + l + '"!');
     }
 
-    var tc = new telnet();
+    var client  = new net.Socket();
 
-    tc.on("connect", function(){
-        tc.exec('key=' + n + '\n', function(err, response) {
-            tc.end();
-        });
+    client.on('connect',function(){
+        client.write('key=' + n + '\n');
     });
-    
-    // connect to server
-    tc.connect({
+
+    client.on('data',function(data){
+        if(data.indexOf("ok") == 0)
+        {
+            client.end();
+        }
+      });
+
+    client.connect({
         host: ip,
         port: 8082
     });
-
 }
 
 module.exports = {
     getState: getState,
     getChannel: getChannel,
+    setChannel: setChannel,
     setKey: setKey
 }
